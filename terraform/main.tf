@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "web_storage" {
     prevent_destroy = true # Prevent deletion (used for tfstate too)
   }
 
-    # FIX: Add sas_policy to enforce SAS expiration
+  # FIX: Add sas_policy to enforce SAS expiration
   sas_policy {
     expiration_period = "P7D" # SAS tokens expire after 7 days by default
   }
