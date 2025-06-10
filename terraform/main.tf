@@ -1,13 +1,14 @@
 # Reference the imported Storage Account resource
 resource "azurerm_storage_account" "web_storage" {
-  name                            = var.sa_name
-  resource_group_name             = var.rg_name
-  location                        = var.location
-  account_tier                    = "Standard"
-  account_replication_type        = "LRS"
-  allow_nested_items_to_be_public = false
-  min_tls_version                 = "TLS1_2"
-  shared_access_key_enabled       = false
+  name                             = var.sa_name
+  resource_group_name              = var.rg_name
+  location                         = var.location
+  account_tier                     = "Standard"
+  account_replication_type         = "LRS"
+  allow_nested_items_to_be_public  = false
+  min_tls_version                  = "TLS1_2"
+  shared_access_key_enabled        = false
+  cross_tenant_replication_enabled = false
 
   # Enable versioning
   blob_properties {
