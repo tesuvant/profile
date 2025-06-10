@@ -31,7 +31,7 @@ jobs:
       - name: Run Checkov
         uses: bridgecrewio/checkov-action@master
         with:
-          directory: .
+          directory: ./terraform/
 
       - name: Terraform Init
         run: terraform init
