@@ -1,22 +1,36 @@
 # Reference the imported Storage Account resource
 resource "azurerm_storage_account" "web_storage" {
-  name                     = var.sa_name
-  resource_group_name      = var.rg_name
-  location                 = var.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  name                            = var.sa_name
+  resource_group_name             = var.rg_name
+  location                        = var.location
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  allow_nested_items_to_be_public = false
+  min_tls_version                 = "TLS1_2"
+  shared_access_key_enabled       = false
 
   # Enable versioning
   blob_properties {
-    versioning_enabled       = true
+    versioning_enabled = true
     delete_retention_policy {
       days = 2
     }
   }
 
   lifecycle {
-    prevent_destroy = true   # Prevent deletion (used for tfstate too)
+    prevent_destroy = true # Prevent deletion (used for tfstate too)
   }
+
+    # FIX: Add sas_policy to enforce SAS expiration
+  sas_policy {
+    expiration_period = "P7D" # SAS tokens expire after 7 days by default
+  }
+
+  # checkov:skip=CKV_AZURE_33: "Ensure Storage logging is enabled for Queue service for read, write and delete requests - deliberately disabled due to FinOps ;) "
+  # checkov:skip=CKV_AZURE_206: "Ensure that Storage Accounts use replication - LRS deliberately chosen for cost optimization in personal project"
+  # checkov:skip=CKV_AZURE_190: "Public access for blobs is required for static website hosting ($web container)."
+  # checkov:skip=CKV2_AZURE_1: "Customer-Managed Keys not enabled due to increased cost and complexity for personal project (Microsoft-Managed Keys are sufficient)."
+  # checkov:skip=CKV2_AZURE_47: "Anonymous blob access is required for public static website hosting ($web container)."
 }
 
 # Static website config
