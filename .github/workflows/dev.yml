@@ -12,20 +12,7 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/
-    permissions:
-      contents: read # Allow the workflow to read the repository's content
-      actions: none        # Not managing workflows
-      checks: none         # Not creating/updating check runs directly
-      deployments: none    # Not creating/managing deployments
-      discussions: none    # Not interacting with discussions
-      id-token: none       # You're using 'creds' for Azure, not OIDC. If you switch to OIDC, this would be 'write'.
-      issues: none         # Not managing issues
-      packages: none       # Not managing GitHub Packages
-      pages: none          # Not managing GitHub Pages
-      pull-requests: none  # Explicitly deny, as you commented out 'write' (prevents commenting, status updates)
-      repository-projects: none # Not managing project boards
-      security-events: none # Not uploading security scanning results (e.g., SARIF)
-      statuses: none       # Not setting commit statuses directly (separate from PR status checks)
+    permissions: read-all # Allow the workflow to read the repository's content
 
     steps:
       - uses: actions/checkout@v3
