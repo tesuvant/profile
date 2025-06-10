@@ -12,6 +12,8 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/
+    env:
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     steps:
       - name: Checkout code
