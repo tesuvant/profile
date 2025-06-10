@@ -7,7 +7,7 @@ resource "azurerm_storage_account" "web_storage" {
   account_replication_type         = "LRS"
   allow_nested_items_to_be_public  = false
   min_tls_version                  = "TLS1_2"
-  shared_access_key_enabled        = false
+  shared_access_key_enabled        = true
   cross_tenant_replication_enabled = false
 
   # Enable versioning
@@ -33,6 +33,7 @@ resource "azurerm_storage_account" "web_storage" {
   # checkov:skip=CKV_AZURE_190: "Public access for blobs is required for static website hosting ($web container)."
   # checkov:skip=CKV2_AZURE_1: "Customer-Managed Keys not enabled due to increased cost and complexity for personal project (Microsoft-Managed Keys are sufficient)."
   # checkov:skip=CKV2_AZURE_33: "Private Endpoint not configured as public access is required for static website hosting."
+  # checkov:skip=CKV2_AZURE_40: "Shared Key access is required for specific legacy/local authentication (e.g., Terraform backend) where AAD isn't fully integrated yet."
   # checkov:skip=CKV2_AZURE_47: "Anonymous blob access is required for public static website hosting ($web container)."
 }
 
