@@ -24,7 +24,7 @@ resource "azurerm_storage_account" "web_storage" {
 
   # FIX: Add sas_policy to enforce SAS expiration
   sas_policy {
-    expiration_period = "P7D" # SAS tokens expire after 7 days by default
+    expiration_period = "7.00:00:00" # SAS tokens expire after 7 days by default
   }
 
   # checkov:skip=CKV_AZURE_33: "Ensure Storage logging is enabled for Queue service for read, write and delete requests - deliberately disabled due to FinOps ;) "
