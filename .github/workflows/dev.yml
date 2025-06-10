@@ -12,6 +12,9 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/
+    permissions:
+      contents: read # Allow the workflow to read the repository's content
+      pull-requests: write # Allow the workflow to comment on PRs or update PR status
 
     steps:
       - uses: actions/checkout@v3
