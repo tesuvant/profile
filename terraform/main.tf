@@ -27,9 +27,11 @@ resource "azurerm_storage_account" "web_storage" {
   }
 
   # checkov:skip=CKV_AZURE_33: "Ensure Storage logging is enabled for Queue service for read, write and delete requests - deliberately disabled due to FinOps ;) "
+  # checkov:skip=CKV_AZURE_59: "Public access (anonymous read for $web container) is required for static website hosting."
   # checkov:skip=CKV_AZURE_206: "Ensure that Storage Accounts use replication - LRS deliberately chosen for cost optimization in personal project"
   # checkov:skip=CKV_AZURE_190: "Public access for blobs is required for static website hosting ($web container)."
   # checkov:skip=CKV2_AZURE_1: "Customer-Managed Keys not enabled due to increased cost and complexity for personal project (Microsoft-Managed Keys are sufficient)."
+  # checkov:skip=CKV2_AZURE_33: "Private Endpoint not configured as public access is required for static website hosting."
   # checkov:skip=CKV2_AZURE_47: "Anonymous blob access is required for public static website hosting ($web container)."
 }
 
