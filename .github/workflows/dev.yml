@@ -1,4 +1,5 @@
 name: Terraform Dev Check
+permissions: read-all # Allow the workflow to read the repository's content
 on:
   push:
     branches:
@@ -12,8 +13,6 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/
-    permissions: read-all # Allow the workflow to read the repository's content
-
     steps:
       - uses: actions/checkout@v3
 
