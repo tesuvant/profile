@@ -66,7 +66,7 @@ resource "azurerm_cdn_profile" "cdn_profile" {
 }
 
 resource "azurerm_cdn_endpoint" "cdn_endpoint" {
-  name                = var.cdn_endpoint_name
+  name                = "${var.cdn_endpoint_name}${var.sa_name}"
   profile_name        = azurerm_cdn_profile.cdn_profile.name
   resource_group_name = var.rg_name
   location            = var.location
