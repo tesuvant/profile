@@ -57,3 +57,29 @@ resource "null_resource" "upload_website" {
 
   depends_on = [azurerm_storage_account_static_website.static_site]
 }
+
+resource "azurerm_cdn_profile" "cdn_profile" {
+  name                = var.cdn_profile_name
+  resource_group_name = var.rg_name
+  location            = var.location
+  sku                 = "Standard_Microsoft"
+}
+
+resource "azurerm_cdn_endpoint" "cdn_endpoint" {
+  name                = var.cdn_endpoint_name
+  profile_name        = azurerm_cdn_profile.cdn_profile.name
+  resource_group_name = var.rg_name
+  location            = var.location
+
+  origin_host_header = "${var.sa_name}.z16.web.core.windows.net"
+  is_http_allowed    = true
+  is_https_allowed   = true
+
+  origin {
+    name      = "staticwebsite"
+    host_name = "${var.sa_name}.z16.web.core.windows.net"
+  }
+
+  depends_on = [azurerm_storage_account_static_website.static_site]
+  # checkov:skip=CKV_AZURE_197: HTTP is allowed for debugging or legacy clients
+}

@@ -1,3 +1,13 @@
+variable "cdn_endpoint_name" {
+  description = "Azure region location"
+  type        = string
+}
+
+variable "cdn_profile_name" {
+  description = "Azure region location"
+  type        = string
+}
+
 variable "location" {
   description = "Azure region location"
   type        = string
