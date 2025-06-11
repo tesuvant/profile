@@ -81,4 +81,5 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
   }
 
   depends_on = [azurerm_storage_account_static_website.static_site]
+  # checkov:skip=CKV_AZURE_197: HTTP is allowed for debugging or legacy clients
 }
