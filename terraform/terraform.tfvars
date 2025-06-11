@@ -1,3 +1,5 @@
-rg_name  = "profile"
-sa_name  = "827be54aprofile"
-location = "northeurope"
+cdn_endpoint_name = "cdnendpoint"
+cdn_profile_name  = "cdnprofile"
+location          = "northeurope"
+rg_name           = "profile"
+sa_name           = "827be54aprofile"
