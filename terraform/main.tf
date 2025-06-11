@@ -83,3 +83,15 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
   depends_on = [azurerm_storage_account_static_website.static_site]
   # checkov:skip=CKV_AZURE_197: HTTP is allowed for debugging or legacy clients
 }
+
+resource "azurerm_cdn_endpoint_custom_domain" "custom_domain" {
+  cdn_endpoint_id = azurerm_cdn_endpoint.cdn_endpoint.id
+  name            = replace(var.custom_domain, ".", "-")
+  host_name       = var.custom_domain
+
+  cdn_managed_https {
+    certificate_type = "Dedicated"
+    protocol_type    = "ServerNameIndication"
+    tls_version      = "TLS12"
+  }
+}
