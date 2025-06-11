@@ -103,24 +103,24 @@ resource "azurerm_cdn_endpoint_rule_set" "redirect_ruleset" {
 }
 
 resource "azurerm_cdn_endpoint_rule" "redirect_http_to_https" {
-  name                 = "redirect-http-to-https"
-  order                = 1
-  rule_set_name        = azurerm_cdn_endpoint_rule_set.redirect_ruleset.name
-  profile_name         = azurerm_cdn_profile.cdn_profile.name
-  endpoint_name        = azurerm_cdn_endpoint.cdn_endpoint.name
-  resource_group_name  = var.rg_name
+  name                = "redirect-http-to-https"
+  order               = 1
+  rule_set_name       = azurerm_cdn_endpoint_rule_set.redirect_ruleset.name
+  profile_name        = azurerm_cdn_profile.cdn_profile.name
+  endpoint_name       = azurerm_cdn_endpoint.cdn_endpoint.name
+  resource_group_name = var.rg_name
 
   conditions {
-    name          = "RequestScheme"
-    match_values  = ["HTTP"]
-    operator      = "Equal"
+    name             = "RequestScheme"
+    match_values     = ["HTTP"]
+    operator         = "Equal"
     negate_condition = false
-    transforms    = []
+    transforms       = []
   }
 
   actions {
-    name           = "UrlRedirect"
-    redirect_type  = "Moved"
-    protocol       = "Https"
+    name          = "UrlRedirect"
+    redirect_type = "Moved"
+    protocol      = "Https"
   }
 }
