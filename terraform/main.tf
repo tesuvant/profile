@@ -55,7 +55,8 @@ resource "null_resource" "upload_website" {
         --account-name ${azurerm_storage_account.web_storage.name} \
         --source ../html \
         --destination '$web' \
-        --auth-mode login
+        --auth-mode login \
+        --overwrite
     EOT
   }
 
