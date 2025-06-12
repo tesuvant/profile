@@ -61,7 +61,7 @@ resource "null_resource" "upload_website" {
         --resource-group ${var.rg_name} \
         --profile-name ${var.cdn_profile_name} \
         --name ${var.cdn_endpoint_name} \
-        --content-paths '/*'
+        --content-paths "/*"
     EOT
   }
 
