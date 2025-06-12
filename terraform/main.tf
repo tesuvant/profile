@@ -45,6 +45,10 @@ resource "azurerm_storage_account_static_website" "static_site" {
 }
 
 resource "null_resource" "upload_website" {
+  triggers = {
+    html_hash = filesha256("${path.module}/../html/index.html")
+  }
+
   provisioner "local-exec" {
     command = <<EOT
       az storage blob upload-batch \
@@ -78,6 +82,22 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
   origin {
     name      = "staticwebsite"
     host_name = "${var.sa_name}.z16.web.core.windows.net"
+  }
+
+  # Redirect: HTTP --> HTTPS
+  delivery_rule {
+    name  = "EnforceHTTPS"
+    order = "1"
+
+    request_scheme_condition {
+      operator     = "Equal"
+      match_values = ["HTTP"]
+    }
+
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol      = "Https"
+    }
   }
 
   depends_on = [azurerm_storage_account_static_website.static_site]
