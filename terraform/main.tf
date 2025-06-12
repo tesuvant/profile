@@ -44,6 +44,26 @@ resource "azurerm_storage_account_static_website" "static_site" {
   error_404_document = "404.html"
 }
 
+resource "null_resource" "update_contact_svg" {
+  provisioner "local-exec" {
+    command = <<EOT
+awk -v repl="$CONTACT" '
+  {
+    while(match($0, /CONTACT/)) {
+      printf "%s", substr($0, 1, RSTART-1)
+      printf "%s", repl
+      $0 = substr($0, RSTART + RLENGTH)
+    }
+    print
+  }
+' contact.svg > contact.tmp && mv contact.tmp contact.svg
+EOT
+    environment = {
+      CONTACT = var.contact
+    }
+  }
+}
+
 resource "null_resource" "upload_website" {
   triggers = {
     html_hash = filesha256("${path.module}/../html/index.html")
@@ -56,12 +76,8 @@ resource "null_resource" "upload_website" {
         --source ../html \
         --destination '$web' \
         --auth-mode login \
+        --content-cache-control "no-cache, no-store, must-revalidate" \
         --overwrite
-      az cdn endpoint purge \
-        --resource-group ${var.rg_name} \
-        --profile-name ${var.cdn_profile_name} \
-        --name ${var.cdn_endpoint_name} \
-        --content-paths "/*"
     EOT
   }
 

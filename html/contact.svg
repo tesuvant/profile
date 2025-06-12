@@ -1,0 +1,15 @@
+<svg viewBox="0 0 130 24" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap');
+    text {
+      dominant-baseline: middle;
+      fill: #000;
+      font-family: 'Indie Flower';
+      font-size: 16px;
+      text-anchor: middle;
+    }
+  </style>
+  <text x="50%" y="50%">
+CONTACT
+  </text>
+</svg>
