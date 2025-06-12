@@ -60,7 +60,7 @@ resource "null_resource" "upload_website" {
       az cdn endpoint purge \
         --resource-group ${var.rg_name} \
         --profile-name ${var.cdn_profile_name} \
-        --name ${cdn_endpoint_name} \
+        --name ${var.cdn_endpoint_name} \
         --content-paths '/*'
     EOT
   }
