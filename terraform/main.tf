@@ -57,6 +57,11 @@ resource "null_resource" "upload_website" {
         --destination '$web' \
         --auth-mode login \
         --overwrite
+      az cdn endpoint purge \
+        --resource-group ${var.rg_name} \
+        --profile-name ${var.cdn_profile_name} \
+        --name ${cdn_endpoint_name} \
+        --content-paths '/*'
     EOT
   }
 
