@@ -45,6 +45,10 @@ resource "azurerm_storage_account_static_website" "static_site" {
 }
 
 resource "null_resource" "upload_website" {
+  triggers = {
+    html_hash = filesha256("${path.module}/../html/index.html")
+  }
+
   provisioner "local-exec" {
     command = <<EOT
       az storage blob upload-batch \
@@ -80,6 +84,22 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
     host_name = "${var.sa_name}.z16.web.core.windows.net"
   }
 
+  # Redirect: HTTP --> HTTPS
+  delivery_rule {
+    name  = "EnforceHTTPS"
+    order = "1"
+
+    request_scheme_condition {
+      operator     = "Equal"
+      match_values = ["HTTP"]
+    }
+
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol      = "Https"
+    }
+  }
+
   depends_on = [azurerm_storage_account_static_website.static_site]
   # checkov:skip=CKV_AZURE_197: HTTP is allowed for debugging or legacy clients
 }
@@ -93,34 +113,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "custom_domain" {
     certificate_type = "Dedicated"
     protocol_type    = "ServerNameIndication"
     tls_version      = "TLS12"
-  }
-}
-
-resource "azurerm_cdn_endpoint_rule_set" "redirect_ruleset" {
-  name                = "https-redirect"
-  profile_name        = azurerm_cdn_profile.cdn_profile.name
-  resource_group_name = var.rg_name
-}
-
-resource "azurerm_cdn_endpoint_rule" "redirect_http_to_https" {
-  name                = "redirect-http-to-https"
-  order               = 1
-  rule_set_name       = azurerm_cdn_endpoint_rule_set.redirect_ruleset.name
-  profile_name        = azurerm_cdn_profile.cdn_profile.name
-  endpoint_name       = azurerm_cdn_endpoint.cdn_endpoint.name
-  resource_group_name = var.rg_name
-
-  conditions {
-    name             = "RequestScheme"
-    match_values     = ["HTTP"]
-    operator         = "Equal"
-    negate_condition = false
-    transforms       = []
-  }
-
-  actions {
-    name          = "UrlRedirect"
-    redirect_type = "Moved"
-    protocol      = "Https"
   }
 }
