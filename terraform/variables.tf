@@ -9,10 +9,10 @@ variable "cdn_profile_name" {
 }
 
 variable "contact" {
-  type = string
+  type        = string
   description = "Multiline contact info to replace CONTACT placeholder"
-  sensitive = true
-  default = "Joe Average"
+  sensitive   = true
+  default     = "Joe Average"
 }
 
 variable "custom_domain" {
