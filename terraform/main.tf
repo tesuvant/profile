@@ -44,23 +44,16 @@ resource "azurerm_storage_account_static_website" "static_site" {
   error_404_document = "404.html"
 }
 
-resource "null_resource" "update_contact_svg" {
+resource "null_resource" "update_contact_info" {
   provisioner "local-exec" {
     command = <<EOT
-awk -v repl="$CONTACT" '
-  {
-    while(match($0, /CONTACT/)) {
-      printf "%s", substr($0, 1, RSTART-1)
-      printf "%s", repl
-      $0 = substr($0, RSTART + RLENGTH)
-    }
-    print
-  }
-' ../html/contact.svg > contact.tmp && mv contact.tmp ../html/contact.svg
-EOT
-    environment = {
-      CONTACT = var.contact
-    }
+      sed -i \
+        -e "s|NAME|${var.name}|g" \
+        -e "s|EMAIL|${var.email}|g" \
+        -e "s|PHONE|${var.phone}|g" \
+        -e "s|LOCATION|${var.location}|g" \
+        ../html/index.html
+    EOT
   }
 }
 
