@@ -62,7 +62,7 @@ EOT
 
 resource "null_resource" "upload_website" {
   triggers = {
-    html_hash = filesha256("${path.module}/../html/index.html")
+    html_hash = filesha256("${path.module}/../html/index.template.html")
   }
 
   provisioner "local-exec" {
