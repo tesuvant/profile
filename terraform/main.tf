@@ -46,7 +46,7 @@ resource "azurerm_storage_account_static_website" "static_site" {
 
 resource "null_resource" "update_contact_info" {
   provisioner "local-exec" {
-    command = <<EOT
+    command     = <<EOT
 export NAME_SCRIPT="<script>document.write('${join("+", split("", var.contact.name))}');</script>"
 export EMAIL_SCRIPT="<script>document.write('${join("+", split("", var.contact.email))}');</script>"
 export PHONE_SCRIPT="<script>document.write('${join("+", split("", var.contact.phone))}');</script>"
