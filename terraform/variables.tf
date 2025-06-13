@@ -28,9 +28,9 @@ variable "sa_name" {
   type        = string
 }
 variable "contact" {
-  type = map(string)
+  type        = map(string)
   description = "Contact information with keys: name, phone, location, email"
-  sensitive = true
+  sensitive   = true
   default = {
     name     = "Joe Average"
     phone    = "+18 938 1013"
