@@ -56,7 +56,7 @@ awk -v repl="$CONTACT" '
     }
     print
   }
-' contact.svg > contact.tmp && mv contact.tmp contact.svg
+' ../html/contact.svg > contact.tmp && mv contact.tmp ../html/contact.svg
 EOT
     environment = {
       CONTACT = var.contact
