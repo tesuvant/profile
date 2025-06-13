@@ -29,3 +29,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 terraform/.terraform.lock.hcl
+html/index.html
