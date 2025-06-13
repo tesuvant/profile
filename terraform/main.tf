@@ -47,15 +47,18 @@ resource "azurerm_storage_account_static_website" "static_site" {
 resource "null_resource" "update_contact_info" {
   provisioner "local-exec" {
     command = <<EOT
-      sed -i \
-        -e "s|NAME|${var.contact.name}|g" \
-        -e "s|EMAIL|${var.contact.email}|g" \
-        -e "s|PHONE|${var.contact.phone}|g" \
-        -e "s|LOCATION|${var.contact.location}|g" \
-        ../html/index.html
-    EOT
+export NAME_SCRIPT="<script>document.write('${join("+", split("", var.contact.name))}');</script>"
+export EMAIL_SCRIPT="<script>document.write('${join("+", split("", var.contact.email))}');</script>"
+export PHONE_SCRIPT="<script>document.write('${join("+", split("", var.contact.phone))}');</script>"
+export LOCATION_SCRIPT="<script>document.write('${join("+", split("", var.contact.location))}');</script>"
+
+envsubst < ../html/index.template.html > ../html/index.html
+EOT
+    interpreter = ["/bin/bash", "-c"]
   }
 }
+
+
 
 resource "null_resource" "upload_website" {
   triggers = {
