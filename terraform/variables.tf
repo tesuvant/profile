@@ -8,13 +8,6 @@ variable "cdn_profile_name" {
   type        = string
 }
 
-variable "contact" {
-  type        = string
-  description = "Multiline contact info to replace CONTACT placeholder"
-  sensitive   = true
-  default     = "Joe Average"
-}
-
 variable "custom_domain" {
   description = "The custom domain name"
   type        = string
@@ -33,4 +26,15 @@ variable "rg_name" {
 variable "sa_name" {
   description = "Storage account name"
   type        = string
+}
+variable "contact" {
+  type        = map(string)
+  description = "Contact information with keys: name, phone, location, email"
+  sensitive   = true
+  default = {
+    name     = "Joe Average"
+    phone    = "+18 938 1013"
+    location = "Langley, VA"
+    email    = "joe.average@foo.bar"
+  }
 }

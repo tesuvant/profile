@@ -44,29 +44,25 @@ resource "azurerm_storage_account_static_website" "static_site" {
   error_404_document = "404.html"
 }
 
-resource "null_resource" "update_contact_svg" {
+resource "null_resource" "update_contact_info" {
   provisioner "local-exec" {
-    command = <<EOT
-awk -v repl="$CONTACT" '
-  {
-    while(match($0, /CONTACT/)) {
-      printf "%s", substr($0, 1, RSTART-1)
-      printf "%s", repl
-      $0 = substr($0, RSTART + RLENGTH)
-    }
-    print
-  }
-' ../html/contact.svg > contact.tmp && mv contact.tmp ../html/contact.svg
+    command     = <<EOT
+export NAME_SCRIPT="<script>document.write('${join("+", split("", var.contact.name))}');</script>"
+export EMAIL_SCRIPT="<script>document.write('${join("+", split("", var.contact.email))}');</script>"
+export PHONE_SCRIPT="<script>document.write('${join("+", split("", var.contact.phone))}');</script>"
+export LOCATION_SCRIPT="<script>document.write('${join("+", split("", var.contact.location))}');</script>"
+
+envsubst < ../html/index.template.html > ../html/index.html
 EOT
-    environment = {
-      CONTACT = var.contact
-    }
+    interpreter = ["/bin/bash", "-c"]
   }
 }
 
+
+
 resource "null_resource" "upload_website" {
   triggers = {
-    html_hash = filesha256("${path.module}/../html/index.html")
+    html_hash = filesha256("${path.module}/../html/index.template.html")
   }
 
   provisioner "local-exec" {
