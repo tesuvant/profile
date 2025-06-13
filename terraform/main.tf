@@ -60,7 +60,11 @@ read -r -d '' LOCATION_SCRIPT <<'EOF'
 <script>document.write('${join("+", split("", var.contact.location))}');</script>
 EOF
 
-envsubst < ../html/index.template.html > ../html/index.html
+sed -e "s|NAME|$NAME_SCRIPT|g" \
+    -e "s|EMAIL|$EMAIL_SCRIPT|g" \
+    -e "s|PHONE|$PHONE_SCRIPT|g" \
+    -e "s|LOCATION|$LOCATION_SCRIPT|g" \
+    ../html/index.template.html > ../html/index.html
 EOT
     interpreter = ["/bin/bash", "-c"]
   }
