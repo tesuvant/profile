@@ -48,10 +48,10 @@ resource "null_resource" "update_contact_info" {
   provisioner "local-exec" {
     command = <<EOT
       sed -i \
-        -e "s|NAME|${var.name}|g" \
-        -e "s|EMAIL|${var.email}|g" \
-        -e "s|PHONE|${var.phone}|g" \
-        -e "s|LOCATION|${var.location}|g" \
+        -e "s|NAME|${var.contact.name}|g" \
+        -e "s|EMAIL|${var.contact.email}|g" \
+        -e "s|PHONE|${var.contact.phone}|g" \
+        -e "s|LOCATION|${var.contact.location}|g" \
         ../html/index.html
     EOT
   }
