@@ -45,8 +45,10 @@ resource "azurerm_storage_account_static_website" "static_site" {
 }
 
 locals {
-  name_script = format("<script>document.write(%s);</script>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)])
-  )
+  name     = format("<script>document.write(%s);</script>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)]))
+  email    = format("<script>document.write(%s);</script>", join("+", [for c in split("", var.contact["email"]) : format("'%s'", c)]))
+  phone    = format("<script>document.write(%s);</script>", join("+", [for c in split("", var.contact["phone"]) : format("'%s'", c)]))
+  location = format("<script>document.write(%s);</script>", join("+", [for c in split("", var.contact["location"]) : format("'%s'", c)]))
 }
 
 resource "null_resource" "update_contact_info" {
@@ -55,10 +57,10 @@ resource "null_resource" "update_contact_info" {
   }
   provisioner "local-exec" {
     command     = <<EOT
-sed -e "s|NAME|${local.name_script}|g" \
-    -e "s|EMAIL|$EMAIL_SCRIPT|g" \
-    -e "s|PHONE|$PHONE_SCRIPT|g" \
-    -e "s|LOCATION|$LOCATION_SCRIPT|g" \
+sed -e "s|NAME|${local.name}|g" \
+    -e "s|EMAIL|${local.email}|g" \
+    -e "s|PHONE|${local.phone}|g" \
+    -e "s|LOCATION|${local.location}|g" \
     ../html/index.template.html > ../html/index.html
 rm -f ../html/index.template.html
 EOT
