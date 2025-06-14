@@ -44,29 +44,17 @@ resource "azurerm_storage_account_static_website" "static_site" {
   error_404_document = "404.html"
 }
 
-resource "null_resource" "update_contact_info" {
+locals {
+  name_script = "<script>document.write(" + join("+", [for c in split("", var.contact.name) : "'${c}'"]) + ");</script>"
+}
 
+resource "null_resource" "update_contact_info" {
   triggers = {
     always_run = timestamp()
   }
-
   provisioner "local-exec" {
     command     = <<EOT
-set -x
-read -r -d '' NAME_SCRIPT <<'EOF'
-<script>document.write('${join("+", split("", var.contact.name))}');</script>
-EOF
-read -r -d '' EMAIL_SCRIPT <<'EOF'
-<script>document.write('${join("+", split("", var.contact.email))}');</script>
-EOF
-read -r -d '' PHONE_SCRIPT <<'EOF'
-<script>document.write('${join("+", split("", var.contact.phone))}');</script>
-EOF
-read -r -d '' LOCATION_SCRIPT <<'EOF'
-<script>document.write('${join("+", split("", var.contact.location))}');</script>
-EOF
-env|grep SCRIPT
-sed -e "s|NAME|$NAME_SCRIPT|g" \
+sed -e "s|NAME|${local.name_script}|g" \
     -e "s|EMAIL|$EMAIL_SCRIPT|g" \
     -e "s|PHONE|$PHONE_SCRIPT|g" \
     -e "s|LOCATION|$LOCATION_SCRIPT|g" \
