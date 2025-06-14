@@ -47,6 +47,7 @@ resource "azurerm_storage_account_static_website" "static_site" {
 resource "null_resource" "update_contact_info" {
   provisioner "local-exec" {
     command     = <<EOT
+set -x
 read -r -d '' NAME_SCRIPT <<'EOF'
 <script>document.write('${join("+", split("", var.contact.name))}');</script>
 EOF
@@ -59,12 +60,13 @@ EOF
 read -r -d '' LOCATION_SCRIPT <<'EOF'
 <script>document.write('${join("+", split("", var.contact.location))}');</script>
 EOF
-
+env|grep SCRIPT
 sed -e "s|NAME|$NAME_SCRIPT|g" \
     -e "s|EMAIL|$EMAIL_SCRIPT|g" \
     -e "s|PHONE|$PHONE_SCRIPT|g" \
     -e "s|LOCATION|$LOCATION_SCRIPT|g" \
     ../html/index.template.html > ../html/index.html
+rm -f ../html/index.template.html
 EOT
     interpreter = ["/bin/bash", "-c"]
   }
