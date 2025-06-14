@@ -19,6 +19,7 @@ jobs:
       TF_VAR_phone: ${{ secrets.TF_VAR_PHONE }}
       TF_VAR_location: ${{ secrets.TF_VAR_LOCATION }}
       TF_VAR_custom_domain: ${{ secrets.TF_VAR_CUSTOM_DOMAIN }}
+      TF_VAR_contact: ${{ secrets.TF_VAR_CONTACT }}
 
     steps:
       - name: Checkout code
