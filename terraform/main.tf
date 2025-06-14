@@ -47,7 +47,7 @@ resource "azurerm_storage_account_static_website" "static_site" {
 resource "null_resource" "update_contact_info" {
 
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
   }
 
   provisioner "local-exec" {
