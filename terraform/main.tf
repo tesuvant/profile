@@ -51,27 +51,18 @@ locals {
   location = format("<script>document.write(%s);</script>", join("+", [for c in split("", var.contact["location"]) : format("'%s'", c)]))
 }
 
-resource "null_resource" "update_contact_info" {
+resource "null_resource" "upload_website" {
   triggers = {
     always_run = timestamp()
   }
   provisioner "local-exec" {
     command     = <<EOT
-sed -e "s|NAME|${local.name}|g" \
-    -e "s|EMAIL|${local.email}|g" \
-    -e "s|PHONE|${local.phone}|g" \
-    -e "s|LOCATION|${local.location}|g" \
-    ../html/index.template.html > ../html/index.html
-rm -f ../html/index.template.html
-EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
-resource "null_resource" "upload_website" {
-
-  provisioner "local-exec" {
-    command = <<EOT
+      sed -e "s|NAME|${local.name}|g" \
+        -e "s|EMAIL|${local.email}|g" \
+        -e "s|PHONE|${local.phone}|g" \
+        -e "s|LOCATION|${local.location}|g" \
+        ../html/index.template.html > ../html/index.html
+      rm -f ../html/index.template.html
       az storage blob upload-batch \
         --account-name ${azurerm_storage_account.web_storage.name} \
         --source ../html \
@@ -80,9 +71,10 @@ resource "null_resource" "upload_website" {
         --content-cache-control "no-cache, no-store, must-revalidate" \
         --overwrite
     EOT
+    interpreter = ["/bin/bash", "-c"]
   }
 
-  depends_on = [azurerm_storage_account_static_website.static_site, null_resource.update_contact_info]
+  depends_on = [azurerm_storage_account_static_website.static_site]
 }
 
 resource "azurerm_cdn_profile" "cdn_profile" {
