@@ -44,10 +44,6 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         if: github.ref == 'refs/heads/main'
-      - name: Debug
-        shell: bash
-        run: |
-          cat html/index.html
       - name: Azure Logout
         run: |
           az logout # Good practice to log out of Azure after the job completes
