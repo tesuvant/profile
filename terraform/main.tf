@@ -45,7 +45,8 @@ resource "azurerm_storage_account_static_website" "static_site" {
 }
 
 locals {
-  name_script = "<script>document.write(" + join("+", [for c in split("", var.contact.name) : "'${c}'"]) + ");</script>"
+  name_script = format("<script>document.write(%s);</script>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)])
+  )
 }
 
 resource "null_resource" "update_contact_info" {
