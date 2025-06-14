@@ -45,10 +45,10 @@ resource "azurerm_storage_account_static_website" "static_site" {
 }
 
 locals {
-  name     = format("<p><script>document.write(%s);</script></p>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)]))
-  email    = format("<p><script>document.write(%s);</script></p>", join("+", [for c in split("", var.contact["email"]) : format("'%s'", c)]))
-  phone    = format("<p><script>document.write(%s);</script></p>", join("+", [for c in split("", var.contact["phone"]) : format("'%s'", c)]))
-  location = format("<p><script>document.write(%s);</script></p>", join("+", [for c in split("", var.contact["location"]) : format("'%s'", c)]))
+  name     = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)]))
+  email    = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["email"]) : format("'%s'", c)]))
+  phone    = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["phone"]) : format("'%s'", c)]))
+  location = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["location"]) : format("'%s'", c)]))
 }
 
 resource "null_resource" "upload_website" {
