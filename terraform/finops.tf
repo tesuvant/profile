@@ -16,8 +16,8 @@ resource "azurerm_monitor_action_group" "email_alert" {
 resource "azurerm_consumption_budget_subscription" "daily_budget" {
   name            = "daily-cost-budget"
   subscription_id = data.azurerm_subscription.current
-  amount          = 0.5 # 0.5€
-  time_grain      = "Daily"
+  amount          = 1.0 # 1€
+  time_grain      = "Monthly"
 
   time_period {
     start_date = "2025-07-01T00:00:00Z"
@@ -27,7 +27,7 @@ resource "azurerm_consumption_budget_subscription" "daily_budget" {
   notification {
     enabled        = true
     operator       = "GreaterThan"
-    threshold      = 100.0 # 100% of 0.5 EUR
+    threshold      = 100.0 # 100% of 1.0 EUR
     contact_groups = [azurerm_monitor_action_group.email_alert.id]
   }
 }
