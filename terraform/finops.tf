@@ -1,5 +1,18 @@
 data "azurerm_subscription" "current" {}
 
+
+resource "azurerm_monitor_action_group" "email_alert" {
+  name                = "CriticalAlertsAction"
+  resource_group_name = var.rg_name
+  short_name          = "Critical"
+
+  email_receiver {
+    name                    = "emailtodevops"
+    email_address           = var.contact.email
+    use_common_alert_schema = true
+  }
+}
+
 resource "azurerm_consumption_budget_subscription" "daily_budget" {
   name            = "daily-cost-budget"
   subscription_id = data.azurerm_subscription.current
@@ -15,7 +28,6 @@ resource "azurerm_consumption_budget_subscription" "daily_budget" {
     enabled        = true
     operator       = "GreaterThan"
     threshold      = 100.0 # 100% of 0.5 EUR
-    contact_emails = [var.contact.email]
     contact_groups = [azurerm_monitor_action_group.email_alert.id]
   }
 }
