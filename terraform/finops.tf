@@ -15,7 +15,7 @@ resource "azurerm_monitor_action_group" "email_alert" {
 
 resource "azurerm_consumption_budget_subscription" "daily_budget" {
   name            = "daily-cost-budget"
-  subscription_id = data.azurerm_subscription.current
+  subscription_id = data.azurerm_subscription.current.id
   amount          = 1.0 # 1€
   time_grain      = "Monthly"
 
