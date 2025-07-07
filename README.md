@@ -77,3 +77,11 @@ To validate infrastructure code changes for correctness, style, and security bef
 
 - 🧼 **Azure Logout**  
   Cleans up Azure credentials using `az logout`, even if previous steps fail.
+
+---
+
+## 💰 Testing Cost Alert
+
+- Create a dummy ACI and wait for alert
+- Verdict: ✅
+<img width="647" alt="image" src="https://github.com/user-attachments/assets/ad1b58cd-f53e-41e6-a61e-db4a3b7448e6" />
