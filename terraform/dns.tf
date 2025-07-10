@@ -8,5 +8,5 @@ resource "azurerm_dns_cname_record" "cdn_alias" {
   zone_name           = azurerm_dns_zone.my_domain
   resource_group_name = var.rg_name
   ttl                 = 3600
-  record = "${azurerm_cdn_endpoint.cdn_endpoint.name}.azureedge.net"
+  record              = "${azurerm_cdn_endpoint.cdn_endpoint.name}.azureedge.net"
 }
