@@ -3,18 +3,10 @@ resource "azurerm_dns_zone" "my_domain" {
   resource_group_name = var.rg_name
 }
 
-resource "azurerm_dns_a_record" "cdn_root" {
-  name                = "@"
-  zone_name           = azurerm_dns_zone.my_domain.name
-  resource_group_name = var.rg_name
-  ttl                 = 300
-  target_resource_id  = azurerm_cdn_endpoint.cdn_endpoint.id
-}
-
 resource "azurerm_dns_cname_record" "cdn_www" {
   name                = "www"
   zone_name           = azurerm_dns_zone.my_domain.name
   resource_group_name = var.rg_name
   ttl                 = 300
-  record              = azurerm_cdn_endpoint_custom_domain.custom_domain.host_name
+  target_resource_id  = azurerm_cdn_endpoint.cdn_endpoint.id
 }
