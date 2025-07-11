@@ -16,5 +16,5 @@ resource "azurerm_dns_cname_record" "cdn_www" {
   zone_name           = azurerm_dns_zone.my_domain.name
   resource_group_name = var.rg_name
   ttl                 = 300
-  record              = azurerm_cdn_endpoint.cdn_endpoint.host_name
+  record              = azurerm_cdn_endpoint_custom_domain.custom_domain.host_name
 }
