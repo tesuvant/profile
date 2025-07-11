@@ -120,14 +120,14 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
     order = "2"
 
     request_uri_condition {
-      operator         = "BeginsWith"
-      match_values = [ "https://www.${var.custom_domain}" ]
+      operator     = "BeginsWith"
+      match_values = ["https://www.${var.custom_domain}"]
     }
 
     url_redirect_action {
       redirect_type = "Moved"
-      protocol = "Https"
-      hostname = var.custom_domain
+      protocol      = "Https"
+      hostname      = var.custom_domain
     }
   }
 
