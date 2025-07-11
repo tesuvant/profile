@@ -114,6 +114,23 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
       protocol      = "Https"
     }
   }
+  # Redirect: www.whatever.xyz --> whatever.xyz
+  delivery_rule {
+    name  = "RedirectWWWToRoot"
+    order = "2"
+
+    request_uri_condition {
+      operator     = "BeginsWith"
+      match_values = ["https://www.${var.custom_domain}"]
+    }
+
+    url_redirect_action {
+      redirect_type = "Moved"
+      protocol      = "Https"
+      hostname      = var.custom_domain
+    }
+  }
+
 
   depends_on = [azurerm_storage_account_static_website.static_site]
   # checkov:skip=CKV_AZURE_197: HTTP is allowed for debugging or legacy clients
