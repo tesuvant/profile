@@ -21,13 +21,13 @@ resource "azurerm_monitor_diagnostic_setting" "cdn_diag" {
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "cdn_high_traffic_alert" {
   name                = "cdn-high-traffic-alert"
-  resource_group_name  = var.rg_name
+  resource_group_name = var.rg_name
   location            = var.location
   enabled             = true
   description         = "ALERT: Vault-Tec didn't prepare me for this!!!11oneone"
   severity            = 2
   frequency           = var.qj.f
-  time_window        = var.qj.w
+  time_window         = var.qj.w
 
   data_source_id = azurerm_log_analytics_workspace.cdn_lawp.id
 
@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "cdn_high_traffic_alert" 
 
   trigger {
     threshold = var.qj.t
-    operator = "GreaterThan"
+    operator  = "GreaterThan"
   }
 
   action {
