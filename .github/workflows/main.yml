@@ -16,6 +16,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       TF_VAR_custom_domain: ${{ secrets.TF_VAR_CUSTOM_DOMAIN }}
       TF_VAR_contact: ${{ secrets.TF_VAR_CONTACT }}
+      TF_VAR_qj: ${{ secrets.TF_VAR_QJ }}
 
     steps:
       - name: Checkout code
