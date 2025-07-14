@@ -39,17 +39,16 @@ variable "contact" {
   }
 }
 
+
 variable "qj" {
-  description = ""
-  sensitive   = true
   type = object({
-    f = string
-    w = string
+    f = number
+    w = number
     t = number
   })
   default = {
-    f = "PT1M"
-    w = "PT5M"
-    t = 443
+    f = 69
+    w = 666
+    t = 42
   }
 }
