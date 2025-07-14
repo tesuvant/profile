@@ -134,23 +134,6 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
   # checkov:skip=CKV_AZURE_197: HTTP is allowed for debugging or legacy clients
 }
 
-
-  delivery_rule {
-    name  = "CacheStaticFiles"
-    order = 2
-
-    file_extension_condition {
-      operator     = "Equal"
-      match_values = ["css", "js", "jpg", "jpeg", "png", "gif", "svg", "ico", "woff", "woff2"]
-    }
-
-    cache_expiration_action {
-      behavior = "Override"
-      duration = "7.00:00:00"
-    }
-  }
-
-
 resource "azurerm_cdn_endpoint_custom_domain" "custom_domain" {
   cdn_endpoint_id = azurerm_cdn_endpoint.cdn_endpoint.id
   name            = replace(var.custom_domain, ".", "-")
