@@ -119,6 +119,11 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
   delivery_rule {
     name  = "CacheControl"
     order = 2
+
+    url_path_condition {
+      operator = "Any"
+    }
+
     cache_expiration_action {
       behavior = "Override"
       duration = "1.00:00:00" # 1 day
