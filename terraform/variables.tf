@@ -48,8 +48,8 @@ variable "qj" {
     t = number
   })
   default = {
-    f = "rg"
-    w = "lb"
+    f = "PT1M"
+    w = "PT5M"
     t = 443
   }
 }
