@@ -19,21 +19,32 @@ resource "azurerm_monitor_diagnostic_setting" "cdn_diag" {
   }
 }
 
-resource "azurerm_monitor_metric_alert" "high_traffic_alert" {
-  name                = "cdn-high-traffic"
-  resource_group_name = var.rg_name
-  scopes              = [azurerm_cdn_endpoint.cdn_endpoint.id]
-  description         = "ALERT: Vault-Tec didn’t prepare me for this!!!11oneone"
+resource "azurerm_monitor_scheduled_query_rules_alert" "cdn_high_traffic_alert" {
+  name                = "cdn-high-traffic-alert"
+  resource_group_name  = var.rg_name
+  location            = var.location
+  enabled             = true
+  description         = "ALERT: Vault-Tec didn't prepare me for this!!!11oneone"
   severity            = 2
   frequency           = var.qj.f
-  window_size         = var.qj.w
-  enabled             = true
+  time_window        = var.qj.w
 
-  criteria {
-    metric_namespace = "Microsoft.Cdn/profiles/endpoints"
-    metric_name      = "RequestCount"
-    aggregation      = "Total"
-    operator         = "GreaterThan"
-    threshold        = var.qj.t
+  data_source_id = azurerm_log_analytics_workspace.cdn_lawp.id
+
+  query = <<-KQL
+    AzureDiagnostics
+    | where ResourceProvider == "MICROSOFT.CDN"
+    | where Category == "AzureCdnAccessLog"
+    | summarize RequestsCount = count() by bin(TimeGenerated, 1m)
+    | where RequestsCount > ${var.qj.t}
+  KQL
+
+  trigger {
+    threshold = var.qj.t
+    operator = "GreaterThan"
+  }
+
+  action {
+    action_group = [azurerm_monitor_action_group.email_alert.id]
   }
 }
