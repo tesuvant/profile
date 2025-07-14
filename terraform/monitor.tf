@@ -8,9 +8,8 @@ resource "azurerm_log_analytics_workspace" "cdn_lawp" {
 
 resource "azurerm_monitor_diagnostic_setting" "cdn_diag" {
   name                       = "cdn-endpoint-logs"
-  target_resource_id         = azurerm_cdn_endpoint.cdn_endpoint.id
+  target_resource_id         = azurerm_cdn_profile.cdn_profile.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.cdn_lawp.id
-
   enabled_log {
     category = "ClientRequestLog"
   }
