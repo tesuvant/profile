@@ -121,7 +121,7 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
     order = 2
 
     url_path_condition {
-      operator     = "Any"
+      operator = "Any"
     }
 
     cache_expiration_action {
