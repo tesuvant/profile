@@ -115,6 +115,16 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
     }
   }
 
+  # Cache TTL
+  delivery_rule {
+    name  = "CacheControl"
+    order = 2
+    cache_expiration_action {
+      behavior = "Override"
+      duration = "1.00:00:00" # 1 day
+    }
+  }
+
   depends_on = [azurerm_storage_account_static_website.static_site]
   # checkov:skip=CKV_AZURE_197: HTTP is allowed for debugging or legacy clients
 }
