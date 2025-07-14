@@ -11,7 +11,7 @@ resource "azurerm_monitor_diagnostic_setting" "cdn_diag" {
   target_resource_id         = azurerm_cdn_profile.cdn_profile.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.cdn_lawp.id
   enabled_log {
-    category = "ClientRequestLog"
+    category = "AzureCdnAccessLog"
   }
 
   enabled_metric {
