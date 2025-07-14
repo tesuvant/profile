@@ -38,3 +38,18 @@ variable "contact" {
     email    = "joe.average@foo.bar"
   }
 }
+
+variable "qj" {
+  description = ""
+  sensitive   = true
+  type = object({
+    f = string
+    w = string
+    t = number
+  })
+  default = {
+    f = "PT1M"
+    w = "PT5M"
+    t = 443
+  }
+}
