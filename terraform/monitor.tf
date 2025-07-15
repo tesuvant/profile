@@ -33,6 +33,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "cdn_high_traffic_alert" 
 
   query = <<-KQL
     AzureDiagnostics
+    | where TimeGenerated > ago(5m)
     | where ResourceProvider == "MICROSOFT.CDN"
     | where Category == "AzureCdnAccessLog"
     | summarize RequestsCount = count() by bin(TimeGenerated, 1m)
