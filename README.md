@@ -80,8 +80,18 @@ To validate infrastructure code changes for correctness, style, and security bef
 
 ---
 
+## 💰 Testing Azure Alert
+
+- Create some traffic and wait for alert
+- Verdict: ✅
+<img width="1005" height="63" alt="image" src="https://github.com/user-attachments/assets/58d0857d-e259-4a4f-9485-f644cc16207d" />
+<img width="357" height="427" alt="image" src="https://github.com/user-attachments/assets/6375bfb3-b05e-4337-a32e-4f11566ca5e7" />
+
+
 ## 💰 Testing Cost Alert
 
-- Create a dummy ACI and wait for alert
+- Create a dummy ACI
 - Verdict: ✅
 <img width="647" alt="image" src="https://github.com/user-attachments/assets/ad1b58cd-f53e-41e6-a61e-db4a3b7448e6" />
+
+
