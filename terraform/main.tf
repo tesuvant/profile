@@ -54,9 +54,13 @@ resource "azurerm_static_web_app" "site" {
 resource "azurerm_static_web_app_custom_domain" "www" {
   static_web_app_id = azurerm_static_web_app.site.id
   domain_name       = "www.${var.custom_domain}"
-  validation_type   = "dns-txt-token"
+  validation_type   = "cname-delegation"
 
   depends_on = [azurerm_dns_cname_record.www]
+
+  lifecycle {
+    ignore_changes = [validation_type]
+  }
 }
 
 resource "azurerm_static_web_app_custom_domain" "apex" {
