@@ -16,7 +16,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       TF_VAR_custom_domain: ${{ secrets.TF_VAR_CUSTOM_DOMAIN }}
       TF_VAR_contact: ${{ secrets.TF_VAR_CONTACT }}
-      TF_VAR_qj: ${{ secrets.TF_VAR_QJ }}
 
     steps:
       - name: Checkout code
@@ -41,6 +40,24 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         if: github.ref == 'refs/heads/main'
+
+      - name: Get Static Web App deployment token
+        id: static-web-app-token
+        run: |
+          echo "token=$(az staticwebapp secrets list \
+            --name "$(terraform output -raw static_web_app_name)" \
+            --resource-group "$TF_VAR_rg_name" \
+            --query properties.apiKey \
+            --output tsv)" >> "$GITHUB_OUTPUT"
+        env:
+          TF_VAR_rg_name: profile
+
+      - name: Deploy website
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.static-web-app-token.outputs.token }}
+          app_location: ./html
+          skip_app_build: true
 
       - name: Azure Logout
         run: |
