@@ -4,7 +4,7 @@ variable "static_web_app_name" {
 }
 
 variable "custom_domain" {
-  description = "Base public domain name managed manually through Porkbun DNS"
+  description = "Base public domain name"
   type        = string
 }
 
