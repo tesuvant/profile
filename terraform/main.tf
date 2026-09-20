@@ -59,6 +59,14 @@ resource "azurerm_static_web_app_custom_domain" "www" {
   depends_on = [azurerm_dns_cname_record.www]
 }
 
+resource "azurerm_static_web_app_custom_domain" "apex" {
+  static_web_app_id = azurerm_static_web_app.site.id
+  domain_name       = var.custom_domain
+  validation_type   = "dns-txt-token"
+
+  depends_on = [azurerm_dns_a_record.apex]
+}
+
 locals {
   name     = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)]))
   email    = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["email"]) : format("'%s'", c)]))

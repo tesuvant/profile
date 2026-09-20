@@ -25,23 +25,29 @@ This project showcases how a personal website can be built and deployed using **
 ## 🌐 Custom domain and HTTPS
 
 The site is hosted by Azure Static Web Apps on its Free plan. Azure provisions and
-renews the HTTPS certificate for `www.<custom-domain>` automatically; no purchased
-certificate is required and HTTP should redirect to HTTPS.
+renews HTTPS certificates for both `<custom-domain>` and `www.<custom-domain>`
+automatically; no purchased certificate is required and HTTP should redirect to
+HTTPS.
 
 Delegate the domain to the Azure DNS name servers shown for the Terraform
-managed zone at your domain registrar. Terraform creates the Azure DNS zone and
-the `www` CNAME record; registrar configuration and name-server delegation
-remain outside Terraform.
+managed zone at your domain registrar. Terraform creates the Azure DNS zone,
+the apex alias record, the apex validation TXT record, and the `www` CNAME
+record; registrar configuration and name-server delegation remain outside
+Terraform.
 
 ```text
+Host: @
+Target: the Static Web App resource (Azure DNS alias)
+
 Host: www
 Target: <the Static Web App default hostname>
 ```
 
-The Terraform resource configures `www.<custom-domain>` in Azure. After the
-CNAME is visible, Azure validates the hostname and provisions the managed HTTPS
-certificate. If the DNS zone or custom domain already exists, import the
-existing resources before applying:
+Terraform configures both `<custom-domain>` and `www.<custom-domain>` in Azure.
+The apex hostname uses TXT-token validation and the `www` hostname uses CNAME
+validation. After DNS is visible, Azure provisions the managed HTTPS
+certificates. If the DNS zone, records, or custom domains already exist, import
+the existing resources before applying:
 
 ```bash
 terraform import azurerm_dns_zone.site \
@@ -50,12 +56,22 @@ terraform import azurerm_dns_zone.site \
 terraform import azurerm_dns_cname_record.www \
   /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/dnszones/<custom-domain>/CNAME/www
 
+terraform import azurerm_dns_a_record.apex \
+  /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/dnszones/<custom-domain>/A/@
+
+terraform import azurerm_dns_txt_record.apex_validation \
+  /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/dnszones/<custom-domain>/TXT/_dnsauth
+
 terraform import azurerm_static_web_app_custom_domain.www \
   /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Web/staticSites/<static-app-name>/customDomains/www.<custom-domain>
+
+terraform import azurerm_static_web_app_custom_domain.apex \
+  /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Web/staticSites/<static-app-name>/customDomains/<custom-domain>
 ```
 
-The apex domain (`<custom-domain>`) can redirect to `www.<custom-domain>` using
-your registrar's forwarding service.
+Both hostnames serve the same site. DNS records do not redirect one hostname to
+the other; use an application-level redirect if a single canonical hostname is
+required.
 
 The deployment workflow retrieves the Static Web App deployment token after
 Azure login, so no additional Static Web Apps secret is needed.
