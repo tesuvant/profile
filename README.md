@@ -42,7 +42,20 @@ Porkbun's URL forwarding. After the CNAME is visible, Azure automatically
 validates the hostname and provisions the managed HTTPS certificate.
 
 The deployment workflow retrieves the Static Web App deployment token after
-Azure login, so no additional long-lived GitHub secret is needed.
+Azure login, so no additional Static Web Apps secret is needed.
+
+The Terraform state storage account is managed as a protected resource with
+`prevent_destroy = true`. It is separate from the Static Web App region because
+Azure Static Web Apps does not support `northeurope`; the site uses `westeurope`
+while the recovered state account remains in `northeurope`.
+
+If the recovered state does not already contain the storage account resource,
+import it before applying:
+
+```bash
+terraform import azurerm_storage_account.web_storage \
+  /subscriptions/<subscription-id>/resourceGroups/profile/providers/Microsoft.Storage/storageAccounts/827be54aprofile
+```
 
 ### Branch Strategy
 
@@ -115,5 +128,3 @@ To validate infrastructure code changes for correctness, style, and security bef
 - Create a dummy ACI
 - Verdict: ✅
 <img width="647" alt="image" src="https://github.com/user-attachments/assets/ad1b58cd-f53e-41e6-a61e-db4a3b7448e6" />
-
-
