@@ -60,6 +60,7 @@ locals {
 
 resource "null_resource" "prepare_website" {
   triggers = {
+    always_run    = timestamp()
     contact       = jsonencode(var.contact)
     template_hash = filesha256("${path.module}/../html/index.template.html")
   }
