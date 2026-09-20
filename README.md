@@ -28,8 +28,10 @@ The site is hosted by Azure Static Web Apps on its Free plan. Azure provisions a
 renews the HTTPS certificate for `www.<custom-domain>` automatically; no purchased
 certificate is required and HTTP should redirect to HTTPS.
 
-DNS remains with Porkbun and is not managed by Terraform. Before applying the
-custom-domain resource, create the CNAME record in Porkbun:
+Delegate the domain to the Azure DNS name servers shown for the Terraform
+managed zone at your domain registrar. Terraform creates the Azure DNS zone and
+the `www` CNAME record; registrar configuration and name-server delegation
+remain outside Terraform.
 
 ```text
 Host: www
@@ -38,16 +40,22 @@ Target: <the Static Web App default hostname>
 
 The Terraform resource configures `www.<custom-domain>` in Azure. After the
 CNAME is visible, Azure validates the hostname and provisions the managed HTTPS
-certificate. If the custom domain was already created manually in Azure,
-import it before applying:
+certificate. If the DNS zone or custom domain already exists, import the
+existing resources before applying:
 
 ```bash
+terraform import azurerm_dns_zone.site \
+  /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/dnszones/<custom-domain>
+
+terraform import azurerm_dns_cname_record.www \
+  /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/dnszones/<custom-domain>/CNAME/www
+
 terraform import azurerm_static_web_app_custom_domain.www \
   /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Web/staticSites/<static-app-name>/customDomains/www.<custom-domain>
 ```
 
 The apex domain (`<custom-domain>`) can redirect to `www.<custom-domain>` using
-Porkbun's URL forwarding.
+your registrar's forwarding service.
 
 The deployment workflow retrieves the Static Web App deployment token after
 Azure login, so no additional Static Web Apps secret is needed.
