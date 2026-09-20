@@ -1,0 +1,12 @@
+resource "azurerm_dns_zone" "site" {
+  name                = var.custom_domain
+  resource_group_name = var.rg_name
+}
+
+resource "azurerm_dns_cname_record" "www" {
+  name                = "www"
+  zone_name           = azurerm_dns_zone.site.name
+  resource_group_name = var.rg_name
+  ttl                 = 300
+  record              = azurerm_static_web_app.site.default_host_name
+}
