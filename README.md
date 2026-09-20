@@ -31,7 +31,7 @@ HTTPS.
 
 Delegate the domain to the Azure DNS name servers shown for the Terraform
 managed zone at your domain registrar. Terraform creates the Azure DNS zone,
-the apex alias record, the apex validation TXT record, and the `www` CNAME
+the apex alias record and the `www` CNAME
 record; registrar configuration and name-server delegation remain outside
 Terraform.
 
@@ -44,10 +44,12 @@ Target: <the Static Web App default hostname>
 ```
 
 Terraform configures both `<custom-domain>` and `www.<custom-domain>` in Azure.
-The apex hostname uses TXT-token validation and the `www` hostname uses CNAME
-validation. After DNS is visible, Azure provisions the managed HTTPS
-certificates. If the DNS zone, records, or custom domains already exist, import
-the existing resources before applying:
+The apex hostname uses TXT-token validation during initial setup and the `www`
+hostname uses CNAME validation. After DNS is visible, Azure provisions the
+managed HTTPS certificates. Once Azure validates the apex hostname, its
+one-time TXT token is cleared and is no longer managed by Terraform. If the DNS
+zone, records, or custom domains already exist, import the existing resources
+before applying:
 
 ```bash
 terraform import azurerm_dns_zone.site \
@@ -58,9 +60,6 @@ terraform import azurerm_dns_cname_record.www \
 
 terraform import azurerm_dns_a_record.apex \
   /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/dnszones/<custom-domain>/A/@
-
-terraform import azurerm_dns_txt_record.apex_validation \
-  /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Network/dnszones/<custom-domain>/TXT/_dnsauth
 
 terraform import azurerm_static_web_app_custom_domain.www \
   /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Web/staticSites/<static-app-name>/customDomains/www.<custom-domain>
