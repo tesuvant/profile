@@ -3,11 +3,6 @@ variable "static_web_app_name" {
   type        = string
 }
 
-variable "custom_domain" {
-  description = "The custom domain name"
-  type        = string
-}
-
 variable "location" {
   description = "Azure region location"
   type        = string
