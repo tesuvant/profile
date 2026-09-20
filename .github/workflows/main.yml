@@ -19,15 +19,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Azure Login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.12.1
 
@@ -61,5 +61,7 @@ jobs:
 
       - name: Azure Logout
         run: |
-          az logout # Good practice to log out of Azure after the job completes
+          if az account show >/dev/null 2>&1; then
+            az logout
+          fi
         if: always() # Ensure this runs even if previous steps fail, to clean up credentials
