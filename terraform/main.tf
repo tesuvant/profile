@@ -8,6 +8,7 @@ resource "azurerm_storage_account" "web_storage" {
   min_tls_version                  = "TLS1_2"
   shared_access_key_enabled        = true
   cross_tenant_replication_enabled = false
+  allowed_copy_scope               = "All"
 
   blob_properties {
     versioning_enabled = true
