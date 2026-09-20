@@ -51,6 +51,12 @@ resource "azurerm_static_web_app" "site" {
   sku_size            = "Free"
 }
 
+resource "azurerm_static_web_app_custom_domain" "www" {
+  static_web_app_id = azurerm_static_web_app.site.id
+  domain_name       = "www.${var.custom_domain}"
+  validation_type   = "cname-delegation"
+}
+
 locals {
   name     = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)]))
   email    = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["email"]) : format("'%s'", c)]))

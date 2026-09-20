@@ -3,6 +3,11 @@ variable "static_web_app_name" {
   type        = string
 }
 
+variable "custom_domain" {
+  description = "Base public domain name managed manually through Porkbun DNS"
+  type        = string
+}
+
 variable "location" {
   description = "Azure Static Web Apps region"
   type        = string
