@@ -24,6 +24,22 @@ resource "azurerm_storage_account" "web_storage" {
   lifecycle {
     prevent_destroy = true
   }
+
+  # The Terraform backend uses Microsoft-managed encryption to avoid the cost
+  # and operational overhead of customer-managed keys.
+  # checkov:skip=CKV2_AZURE_1: Backend storage uses Microsoft-managed encryption.
+  # The backend is accessed by Azure-hosted CI and therefore cannot use a
+  # private endpoint in this low-cost setup.
+  # checkov:skip=CKV2_AZURE_33: Private endpoint is not configured for the backend.
+  # Terraform's azurerm backend requires shared-key authentication here.
+  # checkov:skip=CKV2_AZURE_40: Shared-key access is required by the Terraform backend.
+  # LRS is sufficient for this personal project's recoverable state account.
+  # checkov:skip=CKV_AZURE_206: LRS replication is intentional for cost control.
+  # Queue logging is not used by this storage account.
+  # checkov:skip=CKV_AZURE_33: Queue logging is not used by the Terraform backend.
+  # Anonymous blob access is disabled above; this skip covers Checkov's broad
+  # storage-account public-access rule for a backend used by authenticated CI.
+  # checkov:skip=CKV_AZURE_59: Backend blobs are accessed only by authenticated CI.
 }
 
 resource "azurerm_static_web_app" "site" {
