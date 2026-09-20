@@ -57,6 +57,10 @@ resource "azurerm_static_web_app_custom_domain" "www" {
   validation_type   = "dns-txt-token"
 
   depends_on = [azurerm_dns_cname_record.www]
+
+  lifecycle {
+    ignore_changes = [validation_type]
+  }
 }
 
 resource "azurerm_static_web_app_custom_domain" "apex" {
