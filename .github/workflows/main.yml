@@ -57,6 +57,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ steps.static-web-app-token.outputs.token }}
           app_location: ./html
+          deployment_action: upload
           skip_app_build: true
 
       - name: Azure Logout
