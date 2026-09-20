@@ -1,3 +1,5 @@
-static_web_app_name = "profile-resume"
-location            = "northeurope"
-rg_name             = "profile"
+static_web_app_name      = "profile-resume"
+location                 = "westeurope"
+rg_name                  = "profile"
+sa_name                  = "827be54aprofile"
+storage_account_location = "northeurope"

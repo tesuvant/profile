@@ -4,12 +4,22 @@ variable "static_web_app_name" {
 }
 
 variable "location" {
-  description = "Azure region location"
+  description = "Azure Static Web Apps region"
+  type        = string
+}
+
+variable "storage_account_location" {
+  description = "Region of the Terraform state storage account"
   type        = string
 }
 
 variable "rg_name" {
   description = "Name of the resource group"
+  type        = string
+}
+
+variable "sa_name" {
+  description = "Name of the Terraform state storage account"
   type        = string
 }
 

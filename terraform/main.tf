@@ -1,3 +1,31 @@
+resource "azurerm_storage_account" "web_storage" {
+  name                             = var.sa_name
+  resource_group_name              = var.rg_name
+  location                         = var.storage_account_location
+  account_tier                     = "Standard"
+  account_replication_type         = "LRS"
+  allow_nested_items_to_be_public  = false
+  min_tls_version                  = "TLS1_2"
+  shared_access_key_enabled        = true
+  cross_tenant_replication_enabled = false
+
+  blob_properties {
+    versioning_enabled = true
+
+    delete_retention_policy {
+      days = 2
+    }
+  }
+
+  sas_policy {
+    expiration_period = "7.00:00:00"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "azurerm_static_web_app" "site" {
   name                = var.static_web_app_name
   resource_group_name = var.rg_name
