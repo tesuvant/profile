@@ -7,3 +7,4 @@ output "static_web_app_default_hostname" {
   description = "Azure-provided hostname for DNS configuration"
   value       = azurerm_static_web_app.site.default_host_name
 }
+
