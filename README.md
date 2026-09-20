@@ -12,7 +12,7 @@ This project showcases how a personal website can be built and deployed using **
 - **GitHub Actions** – CI/CD pipeline for testing, building, and deploying.
 - **GitOps** – All changes flow through git-based workflows and PRs.
 - **FinOps** – Resource provisioning and cleanup with cost in mind.
-- **Azure Cloud** – Hosting static website using Azure Storage and Azure CDN.
+- **Azure Cloud** – Hosting static website using Azure Static Web Apps (Free plan).
 - **Codespaces** – Cloud-based development with a pre-configured dev environment.
 - **AI** – AI-enhanced content generation and suggestions.
 - **HTML/CSS Frameworks** – Lightweight styling from various CSS themes.
@@ -21,6 +21,28 @@ This project showcases how a personal website can be built and deployed using **
 - Obfuscation techniques for personal data (JavaScript)
 
 ## 🔁 Workflow
+
+## 🌐 Custom domain and HTTPS
+
+The site is hosted by Azure Static Web Apps on its Free plan. Azure provisions and
+renews the HTTPS certificate for `www.<custom-domain>` automatically; no purchased
+certificate is required and HTTP should redirect to HTTPS.
+
+DNS remains with Porkbun. After the first Terraform apply, add the custom
+domain `www.<custom-domain>` to the Static Web App in the Azure portal. Azure
+will show the validation record. Create the requested CNAME record in Porkbun:
+
+```text
+Host: www
+Target: <the Static Web App default hostname>
+```
+
+The apex domain (`<custom-domain>`) can redirect to `www.<custom-domain>` using
+Porkbun's URL forwarding. After the CNAME is visible, Azure automatically
+validates the hostname and provisions the managed HTTPS certificate.
+
+The deployment workflow retrieves the Static Web App deployment token after
+Azure login, so no additional long-lived GitHub secret is needed.
 
 ### Branch Strategy
 
@@ -80,8 +102,16 @@ To validate infrastructure code changes for correctness, style, and security bef
 
 ---
 
+## 💰 Testing Azure Alert
+
+- Create some traffic and wait for alert
+- Verdict: ✅
+<img width="1005" height="63" alt="image" src="https://github.com/user-attachments/assets/58d0857d-e259-4a4f-9485-f644cc16207d" />
+<img width="357" height="427" alt="image" src="https://github.com/user-attachments/assets/6375bfb3-b05e-4337-a32e-4f11566ca5e7" />
+
+
 ## 💰 Testing Cost Alert
 
-- Create a dummy ACI and wait for alert
+- Create a dummy ACI
 - Verdict: ✅
 <img width="647" alt="image" src="https://github.com/user-attachments/assets/ad1b58cd-f53e-41e6-a61e-db4a3b7448e6" />
