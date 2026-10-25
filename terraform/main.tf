@@ -71,13 +71,6 @@ resource "azurerm_static_web_app_custom_domain" "apex" {
   depends_on = [azurerm_dns_a_record.apex]
 }
 
-locals {
-  name     = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["name"]) : format("'%s'", c)]))
-  email    = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["email"]) : format("'%s'", c)]))
-  phone    = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["phone"]) : format("'%s'", c)]))
-  location = format("<script>document.write(%s);</script><br>", join("+", [for c in split("", var.contact["location"]) : format("'%s'", c)]))
-}
-
 resource "null_resource" "prepare_website" {
   triggers = {
     always_run    = timestamp()
@@ -87,12 +80,36 @@ resource "null_resource" "prepare_website" {
 
   provisioner "local-exec" {
     command     = <<-EOT
-      sed -e "s|NAME|${local.name}|g" \
-        -e "s|EMAIL|${local.email}|g" \
-        -e "s|PHONE|${local.phone}|g" \
-        -e "s|LOCATION|${local.location}|g" \
-        ../html/index.template.html > ../html/index.html
+      python3 - <<'PY'
+      import json
+      import os
+      from pathlib import Path
+
+      template = Path("../html/index.template.html")
+      page = template.read_text()
+      contacts = {
+          "CONTACT_NAME": "CONTACT_NAME",
+          "CONTACT_EMAIL": "CONTACT_EMAIL",
+          "CONTACT_PHONE": "CONTACT_PHONE",
+          "CONTACT_LOCATION": "CONTACT_LOCATION",
+      }
+
+      for token, variable in contacts.items():
+          encoded = "+".join(json.dumps(char) for char in os.environ[variable]) or '""'
+          page = page.replace(
+              f"{{{{{token}}}}}",
+              f"<script>document.currentScript.parentElement.textContent={encoded};</script>",
+          )
+
+      Path("../html/index.html").write_text(page)
+      PY
     EOT
     interpreter = ["/bin/bash", "-c"]
+    environment = {
+      CONTACT_NAME     = var.contact["name"]
+      CONTACT_EMAIL    = var.contact["email"]
+      CONTACT_PHONE    = var.contact["phone"]
+      CONTACT_LOCATION = var.contact["location"]
+    }
   }
 }

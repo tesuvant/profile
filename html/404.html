@@ -3,37 +3,117 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex">
   <title>404 - Page Not Found</title>
   <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f5f4ea;
+      --muted: #c7c6d4;
+      --night: #050509;
+      --panel: #08080e;
+      --cyan: #8f8bff;
+      --yellow: #ffe45c;
+      --coral: #ff9c39;
+      --lavender: #1919db;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-      color: #333;
+      display: grid;
+      min-width: 320px;
+      min-height: 100vh;
+      place-items: center;
+      margin: 0;
+      padding: 1.5rem;
+      color: var(--ink);
+      background-color: var(--night);
+      background-image:
+        radial-gradient(ellipse at 50% 0, rgba(33, 64, 155, .42), transparent 60%),
+        var(--night);
+      font-family: "Courier New", Courier, monospace;
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(100%, 620px);
+      padding: clamp(1.5rem, 6vw, 3.5rem);
+      border: 4px solid var(--lavender);
+      box-shadow: inset 0 0 0 2px var(--cyan), 8px 8px 0 #090965;
+      background: var(--panel);
       text-align: center;
-      padding: 50px;
     }
+
+    .pixel-mark {
+      width: 20px;
+      height: 20px;
+      margin: 0 auto 1.25rem;
+      background: var(--yellow);
+      box-shadow: 8px 0 var(--coral), 0 8px var(--cyan), 8px 8px var(--lavender);
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
     h1 {
-      font-size: 72px;
-      margin-bottom: 10px;
-      color: #dc3545;
+      margin: .5rem 0;
+      color: var(--yellow);
+      font-size: clamp(5rem, 20vw, 8rem);
+      line-height: 1;
+      text-shadow: 3px 3px 0 var(--lavender);
     }
+
     p {
-      font-size: 24px;
-      margin-bottom: 20px;
+      margin: 1rem 0 1.5rem;
+      color: var(--muted);
     }
+
     a {
-      color: #007bff;
+      display: inline-block;
+      padding: .75rem 1rem;
+      border: 2px solid var(--cyan);
+      background: #08080e;
+      box-shadow: 4px 4px 0 #090965;
+      color: var(--cyan);
+      font-weight: 700;
       text-decoration: none;
-      font-weight: bold;
+      text-transform: uppercase;
+      transition: transform .15s steps(2, end), box-shadow .15s steps(2, end);
     }
+
     a:hover {
-      text-decoration: underline;
+      box-shadow: 2px 2px 0 #090965;
+      color: var(--yellow);
+      transform: translate(2px, 2px);
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      a {
+        transition-duration: .01ms;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>404</h1>
-  <p>Oops! The page you’re looking for can’t be found. </p>
-  <p><a href="/">Go back to Home</a></p>
+  <main>
+    <div class="pixel-mark" aria-hidden="true"></div>
+    <span class="eyebrow">The trail ends here</span>
+    <h1>404</h1>
+    <p>Oops! The page you’re looking for can’t be found.</p>
+    <a href="/">Go back to Home</a>
+  </main>
 </body>
 </html>
