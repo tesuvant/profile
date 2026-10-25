@@ -1,20 +1,20 @@
-variable "cdn_endpoint_name" {
-  description = "Azure region location"
-  type        = string
-}
-
-variable "cdn_profile_name" {
-  description = "Azure region location"
+variable "static_web_app_name" {
+  description = "Name of the Azure Static Web App"
   type        = string
 }
 
 variable "custom_domain" {
-  description = "The custom domain name"
+  description = "Base public domain name"
   type        = string
 }
 
 variable "location" {
-  description = "Azure region location"
+  description = "Azure Static Web Apps region"
+  type        = string
+}
+
+variable "storage_account_location" {
+  description = "Region of the Terraform state storage account"
   type        = string
 }
 
@@ -24,9 +24,10 @@ variable "rg_name" {
 }
 
 variable "sa_name" {
-  description = "Storage account name"
+  description = "Name of the Terraform state storage account"
   type        = string
 }
+
 variable "contact" {
   type        = map(string)
   description = "Contact information with keys: name, phone, location, email"
@@ -36,19 +37,5 @@ variable "contact" {
     phone    = "+18 938 1013"
     location = "Langley, VA"
     email    = "joe.average@foo.bar"
-  }
-}
-
-
-variable "qj" {
-  type = object({
-    f = number
-    w = number
-    t = number
-  })
-  default = {
-    f = 69
-    w = 666
-    t = 42
   }
 }
