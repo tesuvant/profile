@@ -4,116 +4,125 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex">
-  <title>404 - Page Not Found</title>
+  <meta name="theme-color" content="#080911">
+  <title>404 — Page not found | Teemu Suvanto</title>
   <style>
     :root {
       color-scheme: dark;
-      --ink: #f5f4ea;
-      --muted: #c7c6d4;
-      --night: #050509;
-      --panel: #08080e;
-      --cyan: #8f8bff;
-      --yellow: #ffe45c;
-      --coral: #ff9c39;
-      --lavender: #1919db;
+      --ink: #f5f5fa;
+      --muted: #a2a4b8;
+      --violet: #9e78ff;
+      --cyan: #6ce8f0;
+      --bg: #080911;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       display: grid;
       min-width: 320px;
-      min-height: 100vh;
+      min-height: 100svh;
       place-items: center;
       margin: 0;
-      padding: 1.5rem;
+      padding: 24px;
+      overflow: hidden;
       color: var(--ink);
-      background-color: var(--night);
-      background-image:
-        radial-gradient(ellipse at 50% 0, rgba(33, 64, 155, .42), transparent 60%),
-        var(--night);
-      font-family: "Courier New", Courier, monospace;
-      line-height: 1.6;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(111, 82, 224, .2), transparent 32rem),
+        radial-gradient(ellipse at 90% 90%, rgba(36, 187, 213, .09), transparent 28rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
     main {
-      width: min(100%, 620px);
-      padding: clamp(1.5rem, 6vw, 3.5rem);
-      border: 4px solid var(--lavender);
-      box-shadow: inset 0 0 0 2px var(--cyan), 8px 8px 0 #090965;
-      background: var(--panel);
+      position: relative;
+      width: min(100%, 680px);
+      padding: clamp(32px, 8vw, 70px);
+      overflow: hidden;
+      border: 1px solid rgba(211, 212, 248, .14);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(24, 25, 42, .92), rgba(12, 13, 22, .95));
+      box-shadow: inset 0 1px rgba(255,255,255,.08), 0 30px 90px rgba(0,0,0,.38);
       text-align: center;
     }
 
-    .pixel-mark {
-      width: 20px;
-      height: 20px;
-      margin: 0 auto 1.25rem;
-      background: var(--yellow);
-      box-shadow: 8px 0 var(--coral), 0 8px var(--cyan), 8px 8px var(--lavender);
+    main::before {
+      position: absolute;
+      top: -110px;
+      left: 50%;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(189, 156, 255, .2);
+      border-radius: 50%;
+      box-shadow: 0 0 0 24px rgba(158, 120, 255, .035), 0 0 0 52px rgba(108, 232, 240, .025);
+      content: "";
+      transform: translateX(-50%);
     }
 
     .eyebrow {
-      color: var(--cyan);
-      font-size: .75rem;
+      position: relative;
+      color: #c9baff;
+      font-size: .7rem;
       font-weight: 700;
-      letter-spacing: .14em;
+      letter-spacing: .16em;
       text-transform: uppercase;
     }
 
     h1 {
-      margin: .5rem 0;
-      color: var(--yellow);
-      font-size: clamp(5rem, 20vw, 8rem);
-      line-height: 1;
-      text-shadow: 3px 3px 0 var(--lavender);
+      position: relative;
+      margin: 16px 0 8px;
+      background: linear-gradient(105deg, #f8f5ff 4%, #c8a8ff 50%, #71e8ed 94%);
+      background-clip: text;
+      color: transparent;
+      font-size: clamp(6rem, 24vw, 10rem);
+      font-weight: 730;
+      letter-spacing: -.1em;
+      line-height: .95;
+      -webkit-background-clip: text;
     }
 
     p {
-      margin: 1rem 0 1.5rem;
+      position: relative;
+      max-width: 400px;
+      margin: 18px auto 28px;
       color: var(--muted);
+      line-height: 1.8;
     }
 
     a {
-      display: inline-block;
-      padding: .75rem 1rem;
-      border: 2px solid var(--cyan);
-      background: #08080e;
-      box-shadow: 4px 4px 0 #090965;
-      color: var(--cyan);
+      position: relative;
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      gap: 9px;
+      padding: 0 18px;
+      border: 1px solid rgba(189, 156, 255, .4);
+      border-radius: 13px;
+      background: linear-gradient(110deg, #b394ff, #8b75f2 60%, #60d9e9);
+      box-shadow: 0 9px 28px rgba(139, 117, 242, .22), inset 0 1px rgba(255,255,255,.38);
+      color: #0b0a14;
+      font-size: .83rem;
       font-weight: 700;
       text-decoration: none;
-      text-transform: uppercase;
-      transition: transform .15s steps(2, end), box-shadow .15s steps(2, end);
+      transition: transform .2s ease, box-shadow .2s ease;
     }
 
     a:hover {
-      box-shadow: 2px 2px 0 #090965;
-      color: var(--yellow);
-      transform: translate(2px, 2px);
+      box-shadow: 0 12px 34px rgba(139, 117, 242, .35);
+      transform: translateY(-2px);
     }
 
-    a:focus-visible {
-      outline: 3px solid var(--cyan);
-      outline-offset: 4px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      a {
-        transition-duration: .01ms;
-      }
-    }
+    a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 5px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }
   </style>
 </head>
 <body>
   <main>
-    <div class="pixel-mark" aria-hidden="true"></div>
-    <span class="eyebrow">The trail ends here</span>
+    <span class="eyebrow">Looks like this route drifted</span>
     <h1>404</h1>
-    <p>Oops! The page you’re looking for can’t be found.</p>
-    <a href="/">Go back to Home</a>
+    <p>The page you're looking for isn't here. Let's get you back to the main site.</p>
+    <a href="/">Return home <span aria-hidden="true">↗</span></a>
   </main>
 </body>
 </html>
